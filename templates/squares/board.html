@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+<center>
+<div class="game-title">
+  <h1>Game of Thrones BINGO!</h1>
+</div>
+
+<div class="game-container">
+  <div class="grid-container">
+    <div class="grid-row">
+    {% for c in cells %}
+      <div class="grid-cell"{%if not c.wildcard%}onclick="markCell({{c.id}})"{%endif%}>
+        <span id="cell-{{c.id}}" class="inner-cell{%if c.marked%} marked-cell{%endif%}">{%if c.wildcard %}(FREE SPACE){%else%}{{c.square.text}}{%endif%}</span>
+      </div>
+      {% if forloop.counter|divisibleby:5 %}
+    </div>
+    <div class="grid-row">
+      {% endif %}
+    {% endfor %}
+    </div>
+  </div>
+</div>
+<div class="game-announcement">
+  <span id="ga-1">{%if bingoed %}<h1>WON!  <a href='/restart/'><small>RESTART</small></a></h1>{%endif%}</span>
+  <span id="ga-2"><small><a href="{%url 'score-board'%}">SCOREBOARD</a></small></span>
+</div>
+</center>
+<script>
+  function markCell(cell_id) {
+    if ($("#ga-1").html()==""){
+    $.ajax({url: "{% url 'mark-cell' %}"+cell_id, success: function(result){
+      console.log("marked = " + result.marked.toString());
+      console.log("bingoed = " + result.bingoed.toString());
+      if(result.marked){
+        $("#cell-"+cell_id).addClass("marked-cell");
+      }else{
+        $("#cell-"+cell_id).removeClass("marked-cell");
+      }
+      if(result.bingoed){
+        $("#ga-1").html("<h1>WON!  <a href='/restart/'><small>RESTART</small></a></h1>");
+        $(".marked-cell").addClass("grid-cell-glow");
+      }else{
+        $("#ga-1").html("");
+        $(".marked-cell").removeClass("grid-cell-glow");
+      }
+
+    }});
+  }else{
+    //function disabled
+  }
+}
+</script>
+{% endblock %}

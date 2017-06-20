@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <div class="full-page-form">
+
+        <form method="post">
+            {% csrf_token %}
+            <center><h2>Game of Thrones BINGO</h2>
+              <h4 class="text-primary">A Lannister always gets his squares</h3>
+
+            <div class="well">
+                {{form.as_p}}
+                <button type="submit" class="btn btn-primary btn-raised">Login</button>
+            </div>
+            </center>
+        </form>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<center>
+<div class="game-title">
+  <h1>SCOREBOARD! <small><a href="{%url 'home'%}">BACK</a></small></h1>
+</div>
+
+<div class="game-container">
+  <div >
+    <center>
+    {% for r in results|slice:":5" %}
+      <div style="background:rgba(238, 228, 218, 0.35);font-size:16px;color:#776e65;font-weight:bold;width:100%;margin-bottom:10px;border-radius:5px;padding:10px">
+        <span style="" id="cell-{{c.id}}" class="inner-cell">{{r.username}}: {{r.bingos}} bingos and {{r.score}} catches</span>
+      </div>
+      <br>
+    {% endfor %}
+    </center>
+
+  </div>
+</div>
+</center>
+{% endblock %}
